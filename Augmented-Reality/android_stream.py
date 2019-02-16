@@ -3,18 +3,20 @@ import cv2
 from cv2 import aruco
 from webcam import Webcam
 
-
 print("starting...")
 
+#start webcam
 webcam = Webcam()
 webcam.start()
+
+# load camera matrix and distortion coefficients
 with np.load('pose_webcam_calibration_output.npz') as X:
 	mtx, dist, _, _= [X[i] for i in ('mtx', 'dist', 'rvecs', 'tvecs')]
 	
 image_size = (1920, 1080)
 aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_1000)
 
-markerLength = 1
+markerLength = 7
 
 arucoParams = aruco.DetectorParameters_create()
 
@@ -28,15 +30,19 @@ while True:
 	img = webcam.get_current_frame()
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=arucoParams)
+	print("type {} value: {}".format(type(ids), id))
+	#if isinstance(
 	if ids != None:
 		rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, markerLength, mtx, dist)
 		imgAruco = aruco.drawDetectedMarkers(img, corners, ids, (0,255,0))
-		imgAruco = aruco.drawAxis(imgAruco, mtx, dist, rvec, tvec, 1)
+		imgAruco = aruco.drawAxis(imgAruco, mtx, dist, rvec, tvec, 0.7)
 	else:
-		print("marker not detected")
+		# print("marker not detected")
+		
 		imgAruco = img
 	cv2.imshow("aruco", img)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		cv2.destroyAllWindows()
+		webcam.stop()
 		break
-
+		
