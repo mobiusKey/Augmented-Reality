@@ -16,7 +16,7 @@ with np.load('pose_webcam_calibration_output.npz') as X:
 image_size = (1920, 1080)
 aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_1000)
 
-markerLength = 7
+markerLength = 0.07
 
 arucoParams = aruco.DetectorParameters_create()
 
@@ -31,11 +31,11 @@ while True:
 	gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=arucoParams)
 	print("type {} value: {}".format(type(ids), id))
-	#if isinstance(
-	if ids != None:
-		rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, markerLength, mtx, dist)
-		imgAruco = aruco.drawDetectedMarkers(img, corners, ids, (0,255,0))
-		imgAruco = aruco.drawAxis(imgAruco, mtx, dist, rvec, tvec, 0.7)
+	if type(ids) is np.ndarray:
+		if ids.any() != None:
+			rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, markerLength, mtx, dist)
+			imgAruco = aruco.drawDetectedMarkers(img, corners, ids, (0,255,0))
+			imgAruco = aruco.drawAxis(imgAruco, mtx, dist, rvec, tvec, 0.07)
 	else:
 		# print("marker not detected")
 		

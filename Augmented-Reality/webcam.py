@@ -4,7 +4,7 @@ from threading import Thread
 class Webcam:
   
     def __init__(self):
-        self.video_capture = cv2.VideoCapture(0)
+        self.video_capture = cv2.VideoCapture('http://104.38.59.31:8080/video')
         self.current_frame = self.video_capture.read()[1]
         self.run = True
           
