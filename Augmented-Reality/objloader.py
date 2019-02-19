@@ -4,7 +4,7 @@ from OpenGL.GL import *
 def MTL(filename):
     contents = {}
     mtl = None
-    for line in open(filename, "r"):
+    for line in open(filename + ".mtl", "r"):
         if line.startswith('#'): continue
         values = line.split()
         if not values: continue
@@ -37,9 +37,9 @@ class OBJ:
         self.normals = []
         self.texcoords = []
         self.faces = []
-
+        self.mtl = None
         material = None
-        for line in open(filename, "r"):
+        for line in open(filename + ".obj", "r"):
             if line.startswith('#'): continue
             values = line.split()
             if not values: continue
@@ -58,7 +58,7 @@ class OBJ:
             elif values[0] in ('usemtl', 'usemat'):
                 material = values[1]
             elif values[0] == 'mtllib':
-                self.mtl = MTL(values[1])
+                self.mtl = MTL(filename)
             elif values[0] == 'f':
                 face = []
                 texcoords = []
@@ -82,14 +82,14 @@ class OBJ:
         glFrontFace(GL_CCW)
         for face in self.faces:
             vertices, normals, texture_coords, material = face
-
-            mtl = self.mtl[material]
-            if 'texture_Kd' in mtl:
+            if self.mtl is not None:
+                mtl = self.mtl[material]
+                if 'texture_Kd' in mtl:
                 # use diffuse texmap
-                glBindTexture(GL_TEXTURE_2D, mtl['texture_Kd'])
-            else:
+                    glBindTexture(GL_TEXTURE_2D, mtl['texture_Kd'])
+                else:
                 # just use diffuse colour
-                glColor(*mtl['Kd'])
+                    glColor(*mtl['Kd'])
 
             glBegin(GL_POLYGON)
             for i in range(len(vertices)):

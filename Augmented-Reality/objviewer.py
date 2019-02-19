@@ -28,7 +28,7 @@ glEnable(GL_DEPTH_TEST)
 glShadeModel(GL_SMOOTH)           # most obj files expect to be smooth-shaded
 
 # LOAD OBJECT AFTER PYGAME INIT
-obj = OBJ('Only_Spider_with_Animations_Export.obj', swapyz=True)
+obj = OBJ('./models/Dragon', swapyz=True)
 
 clock = pygame.time.Clock()
 
