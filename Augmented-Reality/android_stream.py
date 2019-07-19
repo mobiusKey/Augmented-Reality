@@ -36,6 +36,8 @@ while True:
 			rvec, tvec, _ = aruco.estimatePoseSingleMarkers(corners, markerLength, mtx, dist)
 			imgAruco = aruco.drawDetectedMarkers(img, corners, ids, (0,255,0))
 			imgAruco = aruco.drawAxis(imgAruco, mtx, dist, rvec, tvec, 0.07)
+			
+			
 	else:
 		# print("marker not detected")
 		

@@ -1,5 +1,6 @@
 # Basic OBJ file viewer. needs objloader from:
 #  http://www.pygame.org/wiki/OBJFileLoader
+# requirements: install pygame, pyopengl
 # LMB + move: rotate
 # RMB + move: pan
 # Scroll wheel: zoom in/out
@@ -35,7 +36,7 @@ clock = pygame.time.Clock()
 glMatrixMode(GL_PROJECTION)
 glLoadIdentity()
 width, height = viewport
-gluPerspective(90.0, width/float(height), 1, 100.0)
+gluPerspective(90.0, width/float(height), 1, 400.0) # altering this can change clipping issues
 glEnable(GL_DEPTH_TEST)
 glMatrixMode(GL_MODELVIEW)
 
